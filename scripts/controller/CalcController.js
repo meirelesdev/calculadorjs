@@ -29,7 +29,8 @@ class CalcController {
         buttons.forEach((button, index)=>{
             
             this.addEventListenerAll(button, "click drag", e => {
-                console.log(button.className.baseVal.replace("btn-", ""))
+                let btnValue = button.className.baseVal.replace("btn-", "")
+                
                 
             })
 
