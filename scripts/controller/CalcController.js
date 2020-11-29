@@ -2,6 +2,9 @@ class CalcController {
 
     constructor(){
 
+        this._lastOperator = ''
+        this._lastNumber = ''
+
         this._operation = []
         this._locale = 'pt-BR'
         this._displayCalcEl = document.querySelector("#display")
@@ -18,6 +21,8 @@ class CalcController {
         setInterval(()=>{
             this.setDisplayDateTime()
         }, 1000)        
+
+        this.setLastNumberToDisplay()
     }
     addEventListenerAll( element, events, fn){
         events.split( ' ' ).forEach(event => {
@@ -27,11 +32,12 @@ class CalcController {
 
     clearAll(){
         this._operation = []
-        this.setLastNumberToDisplay()
+        this.setLastNumberToDisplay(true)
     }
-
+    
     clearEntry(){
         this._operation.pop()
+        this.setLastNumberToDisplay()
         
     }
     
@@ -54,45 +60,97 @@ class CalcController {
         if( this.getOperationLength() > 3){
             
             this.calc()
-            console.log(this._operation)
         }
     }
 
-    calc(){
-        let calc
-        let last
-        if(this.getOperationLength() > 3) {
-            last = this._operation.pop()
-            if(last == "%"){
+    getResult(){
 
-            } else {
-                calc = eval(this._operation.join(""))
-                this._operation = [ calc , last ]
-                this.setLastNumberToDisplay()
-            }
-        } else {
-            calc = eval(this._operation.join(""))
-            this._operation = [ calc ]
-            this.setLastNumberToDisplay()
+
+        return eval(this._operation.join(""))
+
+    }
+
+    calc(){
+        
+        let last = ''   
+        let calc 
+        this._lastOperator = this.getLastItem()
+        
+        if ( this.getOperationLength() < 3 ){
+            
+            let firstItem = this._operation[0]
+
+            this._operation = [firstItem, this._lastOperator, this._lastNumber]
+        }
+
+        if ( this.getOperationLength() > 3 ) {
+        
+            last = this._operation.pop()
+
+            this._lastNumber = this.getResult()
+
+        } else if(this.getOperationLength() == 3){
+            
+            this._lastNumber = this.getLastItem(false)
 
         }
+        
+        calc = this.getResult()
+            
+        if(last == "%"){
+        
+            calc /= 100
+        
+            this._operation = [ calc ]
+
+        } else {
+    
+            this._operation = [ calc ]
+    
+            if ( last ) this._operation.push( last )
+
+        }
+            
+        this.setLastNumberToDisplay()
     }
 
     getOperationLength(){
         return this._operation.length
     }
-    
-    setLastNumberToDisplay(){
-        let lastNumber
 
-        for(let i = this.getOperationLength() -1; i >= 0; i--){
-            if(!this.isOperator(this._operation[i])){
-               this.displayCalc = this._operation[i]
-               lastNumber = this._operation[i]
-               break
+    getLastItem(isOperator = true){
+
+        let lastItem
+
+        for(let pos = this.getOperationLength() -1; pos >= 0; pos--){
+
+        
+            if(this.isOperator(this._operation[pos]) == isOperator ){
+                this.displayCalc = this._operation[pos]
+                lastItem = this._operation[pos]
+                break
             }
+
         }
-        this.displayCalc = lastNumber ? lastNumber : 0
+
+        if(!lastItem){
+            lastItem = (isOperator) ? this._lastOperator : this._lastNumber
+        }
+
+        return lastItem
+    }
+
+    setLastNumberToDisplay(clear = false){
+        if(!clear){
+            let lastNumber = this.getLastItem(false)
+    
+            this.displayCalc = lastNumber ? lastNumber : 0
+        } else {
+            this._lastNumber = 0
+            this._lastOperator = ''
+            this.displayCalc = 0
+        }
+
     }
 
     addOperation(value){
@@ -155,7 +213,6 @@ class CalcController {
                 this.addOperation('+')
                 break
             case 'igual':
-
                 this.calc()
                 break
             case 'ponto':
@@ -187,7 +244,6 @@ class CalcController {
             
             this.addEventListenerAll(button, "click drag", e => {
                 let btnValue = button.className.baseVal.replace("btn-", "")
-                // console.log(btnValue)
                 this.execBtn(btnValue)
                 
             })
