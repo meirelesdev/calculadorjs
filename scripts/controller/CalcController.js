@@ -302,7 +302,6 @@ class CalcController {
                 this.setLastNumberToDisplay()
             }
         }
-        console.log("ta assim: ", this._operation)       
     }
 
     setError(){
@@ -428,7 +427,12 @@ class CalcController {
     }
 
     set displayCalc(value){
-        this._dateEl.innerHTML = value
+        console.log("o valor é ", value)
+        if(value.length > 10 ){
+            this.setError()
+            return
+        }
+        this._displayCalcEl.innerHTML = value
     }
 
 
@@ -440,7 +444,4 @@ class CalcController {
         this._currentDate = value 
     }
 
-    set displayCalc (value) {
-        this._displayCalcEl.innerHTML = value 
-    }
 }
