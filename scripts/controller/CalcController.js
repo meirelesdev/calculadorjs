@@ -427,8 +427,8 @@ class CalcController {
     }
 
     set displayCalc(value){
-        console.log("o valor é ", value)
-        if(value.length > 10 ){
+        
+        if(value.toString().length > 10 ){
             this.setError()
             return
         }
