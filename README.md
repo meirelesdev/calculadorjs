@@ -1,8 +1,28 @@
-# Calculadora JavaScript
+﻿# Calculadorjs
 
-[![Hcode Treinamentos](https://www.hcode.com.br/res/img/hcode-200x100.png)](https://www.hcode.com.br)
+> Calculadora funcional desenvolvida com JavaScript puro, HTML e CSS, com suporte a operacoes basicas e display digital customizado.
 
-Calculadora desenvolvida como exemplo do Curso Completo de JavaScript na Udemy.com.
+## Stack
 
-### Projeto
-![Calculadora](https://firebasestorage.googleapis.com/v0/b/hcode-com-br.appspot.com/o/calculadora-hcode.jpg?alt=media&token=5406aa3f-b965-401c-9b4e-654609c78b33)
+- HTML5
+- JavaScript
+
+## Prerequisitos
+
+- Nenhum prerequisito especifico
+
+## Como executar
+
+```bash
+# Clone o repositorio
+git clone https://github.com/meirelesdev/calculadorjs.git
+cd calculadorjs
+```
+
+## Licenca
+
+Este projeto esta sob a licenca MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+Desenvolvido por [meirelesdev](https://github.com/meirelesdev/calculadorjs)
